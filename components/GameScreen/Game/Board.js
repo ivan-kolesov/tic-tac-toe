@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Tile from './Tile';
+import { BOARD_SIZE } from './constants';
 
 export default class Board extends Component {
   _renderRows() {
     const rows = [];
 
-    for (let i = 0; i < 3; ++i) {
+    for (let i = 0; i < BOARD_SIZE; ++i) {
       rows.push(
         <View key={i} style={styles.row}>
           {this._renderRow(i)}
@@ -21,8 +22,8 @@ export default class Board extends Component {
     const tiles = [];
     const { board, onPress } = this.props;
 
-    for (let i = 0; i < 3; ++i) {
-      const index = number * 3 + i;
+    for (let i = 0; i < BOARD_SIZE; ++i) {
+      const index = number * BOARD_SIZE + i;
 
       tiles.push(
         <Tile key={i} value={board[index]} index={index} onPress={onPress} />,

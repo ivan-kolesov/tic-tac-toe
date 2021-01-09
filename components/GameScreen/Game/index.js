@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
-import TicTacToe from 'tictactoe-agent';
+import TicTacToe from './TicTacToeAgent';
 import Board from './Board';
 import { View } from 'react-native';
-import {
-  USER_FIGURE,
-  AI_FIGURE,
-  EMPTY,
-  DRAW,
-  VICTORY_CONDITIONS,
-} from './constants';
+import { USER_FIGURE, AI_FIGURE, EMPTY, DRAW, BOARD_SIZE } from './constants';
+import { getWinConditions } from './winConditions';
 
 export default class Game extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      board: [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
+      board: Array(BOARD_SIZE * BOARD_SIZE).fill(EMPTY),
     };
   }
 
@@ -45,7 +40,7 @@ export default class Game extends Component {
 
   _AIAct() {
     const input = this.state.board.join('');
-    const model = new TicTacToe.Model(input, AI_FIGURE);
+    const model = new TicTacToe(input, AI_FIGURE);
     const recommendation = model.getRecommendation();
 
     this._populateTile(recommendation.index, AI_FIGURE);
@@ -57,10 +52,10 @@ export default class Game extends Component {
     }
 
     let winner = null;
-    for (let i = 0; i < VICTORY_CONDITIONS.length; ++i) {
-      let figure = this.state.board[VICTORY_CONDITIONS[i][0]];
+    for (let i = 0; i < getWinConditions().length; ++i) {
+      let figure = this.state.board[getWinConditions()[i][0]];
 
-      if (VICTORY_CONDITIONS[i].every(tile => this._checkTile(tile, figure))) {
+      if (getWinConditions()[i].every(tile => this._checkTile(tile, figure))) {
         winner = figure;
         break;
       }
@@ -73,12 +68,6 @@ export default class Game extends Component {
     return (
       this.state.board[tile] === figure && this.state.board[tile] !== EMPTY
     );
-  }
-
-  _clearField() {
-    this.setState({
-      board: [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-    });
   }
 
   _handlePress = index => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { CIRCLE, CROSS } from './constants';
+import { CIRCLE, CROSS, BOARD_SIZE } from './constants';
 import Circle from './Circle';
 import Cross from './Cross';
 
@@ -8,9 +8,9 @@ export default class Tile extends Component {
   _renderContent() {
     switch (this.props.value) {
       case CIRCLE:
-        return <Circle color="white" />;
+        return <Circle />;
       case CROSS:
-        return <Cross color="white" />;
+        return <Cross />;
       default:
         return <Text style={styles.text} onPress={this._handlePress} />;
     }
@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#fff',
     borderWidth: 1,
-    width: 100,
-    height: 100,
+    width: 100 - 7 * BOARD_SIZE,
+    height: 100 - 7 * BOARD_SIZE,
   },
   text: {
-    width: 100,
-    height: 100,
+    width: 100 - 7 * BOARD_SIZE,
+    height: 100 - 7 * BOARD_SIZE,
   },
 });
